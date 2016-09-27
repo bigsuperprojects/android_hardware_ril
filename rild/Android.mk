@@ -18,7 +18,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libdl
 ifeq ($(BOARD_PROVIDES_LIBRIL),true)
 LOCAL_SHARED_LIBRARIES += \
-	libril_shim 
+	libril_shim
 endif
 
 # temporary hack for broken vendor rils
