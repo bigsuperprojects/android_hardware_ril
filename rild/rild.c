@@ -85,6 +85,12 @@ static struct RIL_Env s_rilEnv = {
     RIL_onRequestAck
 };
 
+static struct RIL_Env s_rilEnv1 = {
+    RIL_onRequestComplete,
+    RIL_onUnsolicitedResponse,
+    RIL_requestTimedCallback,
+};
+
 extern void RIL_startEventLoop();
 
 static int make_argv(char * args, char ** argv) {
@@ -358,9 +364,8 @@ OpenLib:
     rilArgv[0] = argv[0];
 
 #if RIL_INIT_SHIM
-    funcs = RIL_Init_Shim(rilInit, &s_rilEnv, argc, rilArgv);
-
     RIL_Shim_AddSignalHandlers();
+    funcs = RIL_Init_Shim(rilInit, &s_rilEnv1, argc, rilArgv);
 #else
     funcs = rilInit(&s_rilEnv, argc, rilArgv);
 #endif

@@ -17,8 +17,8 @@ LOCAL_SHARED_LIBRARIES := \
 	librilutils \
 	libdl
 ifeq ($(BOARD_PROVIDES_LIBRIL),true)
-LOCAL_SHARED_LIBRARIES += \
-	libril_shim
+#LOCAL_SHARED_LIBRARIES += \
+#	libril_shim
 endif
 
 # temporary hack for broken vendor rils
