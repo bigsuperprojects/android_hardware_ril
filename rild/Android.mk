@@ -1,7 +1,5 @@
 # Copyright 2006 The Android Open Source Project
 
-ifneq ($(BOARD_PROVIDES_RILD),true)
-
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
@@ -16,10 +14,6 @@ LOCAL_SHARED_LIBRARIES := \
 	libril \
 	librilutils \
 	libdl
-ifeq ($(BOARD_PROVIDES_LIBRIL),true)
-#LOCAL_SHARED_LIBRARIES += \
-#	libril_shim
-endif
 
 # temporary hack for broken vendor rils
 LOCAL_WHOLE_STATIC_LIBRARIES := \
@@ -57,5 +51,3 @@ LOCAL_MODULE:= radiooptions
 LOCAL_MODULE_TAGS := debug
 
 include $(BUILD_EXECUTABLE)
-
-endif
