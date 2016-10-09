@@ -53,3 +53,4 @@ LOCAL_MODULE:= radiooptions
 LOCAL_MODULE_TAGS := debug
 
 include $(BUILD_EXECUTABLE)
+endif
