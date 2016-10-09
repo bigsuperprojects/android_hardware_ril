@@ -162,7 +162,9 @@ int main(int argc, char **argv) {
     const char *clientId = NULL;
     RLOGD("**RIL Daemon Started**");
     RLOGD("**RILd param count=%d**", argc);
-
+#if RIL_INIT_SHIM
+    RIL_Shim_AddSignalHandlers();
+#endif
     umask(S_IRGRP | S_IWGRP | S_IXGRP | S_IROTH | S_IWOTH | S_IXOTH);
     for (i = 1; i < argc ;) {
         if (0 == strcmp(argv[i], "-l") && (argc - i > 1)) {
@@ -360,7 +362,7 @@ OpenLib:
 #if RIL_INIT_SHIM
     funcs = RIL_Init_Shim(rilInit, &s_rilEnv, argc, rilArgv);
 
-    RIL_Shim_AddSignalHandlers();
+//    RIL_Shim_AddSignalHandlers();
 #else
     funcs = rilInit(&s_rilEnv, argc, rilArgv);
 #endif
