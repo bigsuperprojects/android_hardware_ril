@@ -38,10 +38,14 @@
 #include <private/android_filesystem_config.h>
 #include "hardware/qemu_pipe.h"
 
+#include "ril-shim.h"
+
 #define LIB_PATH_PROPERTY   "rild.libpath"
 #define LIB_ARGS_PROPERTY   "rild.libargs"
 #define MAX_LIB_ARGS        16
 #define MAX_CAP_NUM         (CAP_TO_INDEX(CAP_LAST_CAP) + 1)
+
+#define RIL_INIT_SHIM 1
 
 static void usage(const char *argv0) {
     fprintf(stderr, "Usage: %s -l <ril impl library> [-- <args for impl library>]\n", argv0);
@@ -159,7 +163,9 @@ int main(int argc, char **argv) {
     const char *clientId = NULL;
     RLOGD("**RIL Daemon Started**");
     RLOGD("**RILd param count=%d**", argc);
-
+#if RIL_INIT_SHIM
+    RIL_Shim_AddSignalHandlers();
+#endif
     umask(S_IRGRP | S_IWGRP | S_IXGRP | S_IROTH | S_IWOTH | S_IXOTH);
     for (i = 1; i < argc ;) {
         if (0 == strcmp(argv[i], "-l") && (argc - i > 1)) {
@@ -358,7 +364,13 @@ OpenLib:
     // Make sure there's a reasonable argv[0]
     rilArgv[0] = argv[0];
 
+#if RIL_INIT_SHIM
+    funcs = RIL_Init_Shim(rilInit, &s_rilEnv, argc, rilArgv);
+
+//    RIL_Shim_AddSignalHandlers();
+#else
     funcs = rilInit(&s_rilEnv, argc, rilArgv);
+#endif
     RLOGD("RIL_Init rilInit completed");
 
     RIL_register(funcs);
